@@ -14,7 +14,9 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from 'lucide-react';
-import { attractions, zones, ticketTypes } from '@themepark/shared';
+import { attractions } from '../data/attractions';
+import { zones } from '../data/zones';
+import { ticketTypes } from '../data/tickets';
 
 interface StatCardProps {
   title: string;

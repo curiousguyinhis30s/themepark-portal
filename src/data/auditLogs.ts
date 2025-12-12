@@ -1,0 +1,253 @@
+/**
+ * Audit Trail Data
+ */
+
+export interface AuditLog {
+  id: string;
+  timestamp: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userRole: string;
+  action: 'CREATE' | 'READ' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'LOGOUT' | 'LOGIN_FAILED' | 'EXPORT' | 'IMPORT' | 'APPROVE' | 'REJECT';
+  category: 'Authentication' | 'Users' | 'Attractions' | 'Tickets' | 'Queues' | 'Staff' | 'Settings' | 'Reports' | 'System' | 'Promotions' | 'Zones';
+  resource: string;
+  resourceId: string | null;
+  details: string;
+  metadata: Record<string, unknown>;
+  ipAddress: string;
+  userAgent: string;
+  status: 'success' | 'failed' | 'warning';
+  duration: number; // ms
+}
+
+const generateTimestamp = (minutesAgo: number) => {
+  const date = new Date();
+  date.setMinutes(date.getMinutes() - minutesAgo);
+  return date.toISOString();
+};
+
+export const auditLogs: AuditLog[] = [
+  {
+    id: 'audit_001',
+    timestamp: generateTimestamp(5),
+    userId: 'admin_001',
+    userName: 'Sarah Admin',
+    userEmail: 'sarah.admin@themepark.my',
+    userRole: 'Super Admin',
+    action: 'UPDATE',
+    category: 'Attractions',
+    resource: 'Thunder Mountain Express',
+    resourceId: 'attr_001',
+    details: 'Updated wait time from 35 min to 45 min',
+    metadata: { previousValue: 35, newValue: 45, field: 'waitTime' },
+    ipAddress: '192.168.1.100',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+    status: 'success',
+    duration: 145,
+  },
+  {
+    id: 'audit_002',
+    timestamp: generateTimestamp(12),
+    userId: 'manager_002',
+    userName: 'Ahmad Manager',
+    userEmail: 'ahmad.manager@themepark.my',
+    userRole: 'Operations Manager',
+    action: 'CREATE',
+    category: 'Promotions',
+    resource: 'Holiday Special 2024',
+    resourceId: 'promo_045',
+    details: 'Created new promotion: 20% off Day Pass for holiday season',
+    metadata: { discountType: 'percentage', discountValue: 20, validFrom: '2024-12-20', validTo: '2025-01-05' },
+    ipAddress: '192.168.1.105',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15',
+    status: 'success',
+    duration: 234,
+  },
+  {
+    id: 'audit_003',
+    timestamp: generateTimestamp(18),
+    userId: 'system',
+    userName: 'System',
+    userEmail: 'system@themepark.my',
+    userRole: 'System',
+    action: 'UPDATE',
+    category: 'Zones',
+    resource: 'Adventure Peak',
+    resourceId: 'zone_001',
+    details: 'Auto-updated visitor count: 3247 visitors',
+    metadata: { previousCount: 3189, newCount: 3247, source: 'turnstile_sync' },
+    ipAddress: '127.0.0.1',
+    userAgent: 'ThemePark-System/1.0',
+    status: 'success',
+    duration: 45,
+  },
+  {
+    id: 'audit_004',
+    timestamp: generateTimestamp(25),
+    userId: 'unknown',
+    userName: 'Unknown',
+    userEmail: 'hacker@suspicious.com',
+    userRole: 'None',
+    action: 'LOGIN_FAILED',
+    category: 'Authentication',
+    resource: 'Admin Portal',
+    resourceId: null,
+    details: 'Failed login attempt - Invalid credentials (attempt 3 of 5)',
+    metadata: { attemptNumber: 3, maxAttempts: 5, reason: 'invalid_password' },
+    ipAddress: '103.45.67.89',
+    userAgent: 'Mozilla/5.0 (Windows NT 6.1) Chrome/91.0.4472.124',
+    status: 'failed',
+    duration: 89,
+  },
+  {
+    id: 'audit_005',
+    timestamp: generateTimestamp(32),
+    userId: 'admin_001',
+    userName: 'Sarah Admin',
+    userEmail: 'sarah.admin@themepark.my',
+    userRole: 'Super Admin',
+    action: 'DELETE',
+    category: 'Users',
+    resource: 'test.user@example.com',
+    resourceId: 'user_temp_001',
+    details: 'Deleted test user account',
+    metadata: { reason: 'test_cleanup', deletedBy: 'admin_001' },
+    ipAddress: '192.168.1.100',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+    status: 'warning',
+    duration: 178,
+  },
+  {
+    id: 'audit_006',
+    timestamp: generateTimestamp(45),
+    userId: 'manager_003',
+    userName: 'Priya Operations',
+    userEmail: 'priya.ops@themepark.my',
+    userRole: 'Operations Manager',
+    action: 'UPDATE',
+    category: 'Attractions',
+    resource: 'Skydive Tower',
+    resourceId: 'attr_007',
+    details: 'Changed status from Open to Maintenance',
+    metadata: { previousStatus: 'open', newStatus: 'maintenance', reason: 'scheduled_inspection' },
+    ipAddress: '192.168.1.112',
+    userAgent: 'Mozilla/5.0 (iPad; CPU OS 17_0) AppleWebKit/605.1.15',
+    status: 'warning',
+    duration: 156,
+  },
+  {
+    id: 'audit_007',
+    timestamp: generateTimestamp(58),
+    userId: 'admin_002',
+    userName: 'Wei Lin Tech',
+    userEmail: 'weilin.tech@themepark.my',
+    userRole: 'Technical Admin',
+    action: 'EXPORT',
+    category: 'Reports',
+    resource: 'Monthly Revenue Report',
+    resourceId: 'report_nov_2024',
+    details: 'Exported monthly revenue report to CSV (1,247 records)',
+    metadata: { format: 'csv', recordCount: 1247, fileSize: '245KB', dateRange: '2024-11-01 to 2024-11-30' },
+    ipAddress: '192.168.1.108',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Firefox/121.0',
+    status: 'success',
+    duration: 2345,
+  },
+  {
+    id: 'audit_008',
+    timestamp: generateTimestamp(75),
+    userId: 'manager_002',
+    userName: 'Ahmad Manager',
+    userEmail: 'ahmad.manager@themepark.my',
+    userRole: 'Operations Manager',
+    action: 'APPROVE',
+    category: 'Staff',
+    resource: 'Leave Request #LR-2024-0892',
+    resourceId: 'leave_0892',
+    details: 'Approved annual leave for Michelle Wong (Dec 15-20)',
+    metadata: { staffId: 'staff_008', leaveType: 'annual', days: 5, startDate: '2024-12-15' },
+    ipAddress: '192.168.1.105',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15',
+    status: 'success',
+    duration: 234,
+  },
+  {
+    id: 'audit_009',
+    timestamp: generateTimestamp(90),
+    userId: 'system',
+    userName: 'System',
+    userEmail: 'system@themepark.my',
+    userRole: 'System',
+    action: 'CREATE',
+    category: 'System',
+    resource: 'Daily Backup',
+    resourceId: 'backup_20241212',
+    details: 'Automatic daily backup completed successfully',
+    metadata: { size: '2.4GB', duration: 345000, tables: 48, verified: true },
+    ipAddress: '127.0.0.1',
+    userAgent: 'ThemePark-Backup/1.0',
+    status: 'success',
+    duration: 345000,
+  },
+  {
+    id: 'audit_010',
+    timestamp: generateTimestamp(120),
+    userId: 'admin_001',
+    userName: 'Sarah Admin',
+    userEmail: 'sarah.admin@themepark.my',
+    userRole: 'Super Admin',
+    action: 'LOGIN',
+    category: 'Authentication',
+    resource: 'Admin Portal',
+    resourceId: null,
+    details: 'Successful login from Chrome/Windows',
+    metadata: { browser: 'Chrome', os: 'Windows 10', mfaUsed: true },
+    ipAddress: '192.168.1.100',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+    status: 'success',
+    duration: 456,
+  },
+  {
+    id: 'audit_011',
+    timestamp: generateTimestamp(150),
+    userId: 'ticketing_001',
+    userName: 'Siti Ticketing',
+    userEmail: 'siti.tickets@themepark.my',
+    userRole: 'Ticketing Staff',
+    action: 'CREATE',
+    category: 'Tickets',
+    resource: 'Ticket Sale',
+    resourceId: 'sale_20241212_1234',
+    details: 'Processed walk-in ticket sale: 4x Day Pass (RM 756)',
+    metadata: { ticketType: 'Day Pass', quantity: 4, total: 756, paymentMethod: 'credit_card' },
+    ipAddress: '192.168.1.150',
+    userAgent: 'ThemePark-POS/2.0',
+    status: 'success',
+    duration: 890,
+  },
+  {
+    id: 'audit_012',
+    timestamp: generateTimestamp(180),
+    userId: 'manager_003',
+    userName: 'Priya Operations',
+    userEmail: 'priya.ops@themepark.my',
+    userRole: 'Operations Manager',
+    action: 'UPDATE',
+    category: 'Settings',
+    resource: 'Park Operating Hours',
+    resourceId: 'settings_hours',
+    details: 'Extended closing time from 20:00 to 22:00 for holiday period',
+    metadata: { previousClosing: '20:00', newClosing: '22:00', effectiveFrom: '2024-12-20', effectiveTo: '2025-01-05' },
+    ipAddress: '192.168.1.112',
+    userAgent: 'Mozilla/5.0 (iPad; CPU OS 17_0) AppleWebKit/605.1.15',
+    status: 'success',
+    duration: 234,
+  },
+];
+
+export const getAuditLogById = (id: string) => auditLogs.find((l) => l.id === id);
+export const getAuditLogsByCategory = (category: string) => auditLogs.filter((l) => l.category === category);
+export const getAuditLogsByUser = (userId: string) => auditLogs.filter((l) => l.userId === userId);
+export const getAuditLogsByStatus = (status: string) => auditLogs.filter((l) => l.status === status);
+export const getRecentAuditLogs = (count: number) => auditLogs.slice(0, count);

@@ -22,7 +22,7 @@ import {
   User,
   Globe,
 } from 'lucide-react';
-import { auditLogs, type AuditLog } from '@themepark/shared';
+import { auditLogs, type AuditLog } from '../data/auditLogs';
 import { Pagination, EmptyState } from '../components/ui/LoadingStates';
 import { StatCard } from '../components/ui';
 

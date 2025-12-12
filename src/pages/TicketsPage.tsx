@@ -16,7 +16,7 @@ import {
   Package,
   Percent,
 } from 'lucide-react';
-import { ticketTypes, type TicketType } from '@themepark/shared';
+import { ticketTypes, type TicketType } from '../data/tickets';
 import { StatCard } from '../components/ui';
 
 function getTicketIcon(category: TicketType['category']) {

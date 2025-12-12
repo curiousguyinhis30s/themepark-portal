@@ -23,7 +23,8 @@ import {
   Sparkles,
   UserX,
 } from 'lucide-react';
-import { staff, zones, type Staff } from '@themepark/shared';
+import { staff, type Staff } from '../data/staff';
+import { zones } from '../data/zones';
 import { StatCard } from '../components/ui';
 
 function getDepartmentIcon(department: string) {

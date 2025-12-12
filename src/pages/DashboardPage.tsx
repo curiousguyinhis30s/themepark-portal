@@ -14,7 +14,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from 'lucide-react';
-import { attractions } from '@themepark/shared';
+import { attractions } from '../data/attractions';
 
 interface StatCardProps {
   title: string;

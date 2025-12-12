@@ -16,7 +16,8 @@ import {
   Settings2,
   AlertTriangle,
 } from 'lucide-react';
-import { attractions, zones, type Attraction } from '@themepark/shared';
+import { attractions, type Attraction } from '../data/attractions';
+import { zones } from '../data/zones';
 import { StatCard } from '../components/ui';
 
 function getStatusBadge(status: Attraction['status']) {

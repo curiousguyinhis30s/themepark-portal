@@ -17,7 +17,7 @@ import {
   Ship,
   ChevronDown,
 } from 'lucide-react';
-import { zones, type Zone, getTotalVisitors, getTotalCapacity } from '@themepark/shared';
+import { zones, type Zone, getTotalVisitors, getTotalCapacity } from '../data/zones';
 import { StatCard } from '../components/ui';
 
 function getZoneIcon(theme: string) {

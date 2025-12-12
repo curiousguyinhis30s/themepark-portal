@@ -15,7 +15,7 @@ import {
   Ticket,
   Crown,
 } from 'lucide-react';
-import { users, type User } from '@themepark/shared';
+import { users, type User } from '../data/users';
 import { Pagination, EmptyState } from '../components/ui/LoadingStates';
 import { StatCard } from '../components/ui';
 
