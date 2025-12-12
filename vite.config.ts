@@ -7,16 +7,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@themepark/shared': path.resolve(__dirname, '../../packages/shared/src'),
     },
   },
   server: {
     port: 8083,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8081',
-        changeOrigin: true,
-      },
-    },
   },
 });
