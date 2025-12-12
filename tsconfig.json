@@ -17,11 +17,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@themepark/shared": ["../../packages/shared/src/index.ts"],
-      "@themepark/shared/*": ["../../packages/shared/src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "../../packages/shared/src"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
