@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import {
   Ticket,
   QrCode,
@@ -65,16 +64,8 @@ export default function TicketsPage() {
   } | null>(null);
   const [isValidating, setIsValidating] = useState(false);
 
-  const { data: ticketTypesData } = useQuery({
-    queryKey: ['ticketTypes'],
-    queryFn: async () => {
-      const res = await fetch('/api/tickets/types');
-      return res.json();
-    },
-  });
-
-  // Use shared data as fallback
-  const displayTicketTypes = ticketTypesData?.ticketTypes || ticketTypes;
+  // Use shared data directly - no API needed
+  const displayTicketTypes = ticketTypes;
 
   // Calculate stats from ticket types
   const stats = useMemo(() => {
@@ -93,19 +84,23 @@ export default function TicketsPage() {
     if (!validateCode) return;
     setIsValidating(true);
 
-    try {
-      const res = await fetch('/api/tickets/validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ qrCode: validateCode }),
-      });
-      const data = await res.json();
-      setValidationResult(data);
-    } catch {
-      setValidationResult({ valid: false, error: 'Failed to validate ticket' });
-    } finally {
+    // Mock validation - simulate API call
+    setTimeout(() => {
+      if (validateCode.startsWith('TK')) {
+        setValidationResult({
+          valid: true,
+          ticket: {
+            visitorName: 'John Smith',
+            ticketTypeName: 'Day Pass',
+            validFrom: new Date().toISOString().split('T')[0],
+            validUntil: new Date().toISOString().split('T')[0],
+          },
+        });
+      } else {
+        setValidationResult({ valid: false, error: 'Invalid ticket code' });
+      }
       setIsValidating(false);
-    }
+    }, 500);
   };
 
   const formatPrice = (price: number) => {

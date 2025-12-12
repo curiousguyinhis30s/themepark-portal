@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import {
   Ticket,
@@ -83,13 +82,17 @@ function ActivityItem({ time, text, icon }: { time: string; text: string; icon: 
 }
 
 export default function DashboardPage() {
-  const { data: parkStatus, isLoading } = useQuery({
-    queryKey: ['parkStatus'],
-    queryFn: async () => {
-      const res = await fetch('/api/park/status');
-      return res.json();
-    },
-  });
+  // Mock park status - no API needed
+  const parkStatus = {
+    status: {
+      openAttractions: 16,
+      totalAttractions: 18,
+      averageWaitTime: 24,
+      crowdLevel: 'moderate',
+      closeTime: '23:00',
+    }
+  };
+  const isLoading = false;
 
   const status = parkStatus?.status;
 
